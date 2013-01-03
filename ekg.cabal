@@ -21,6 +21,10 @@ extra-source-files:  LICENSE.icons LICENSE.javascript README.md
                      assets/jquery-1.6.4.js assets/jquery.flot.js
                      examples/Basic.hs
 
+flag useSnap
+  default: False
+  description: Build against Snap
+
 library
   exposed-modules:
     System.Remote.Counter
@@ -28,29 +32,39 @@ library
     System.Remote.Label
     System.Remote.Monitoring
 
-  other-modules:
-    Paths_ekg
-    System.Remote.Common
-    System.Remote.Counter.Internal
-    System.Remote.Gauge.Internal
-    System.Remote.Label.Internal
-    System.Remote.Snap
+  other-modules:       Paths_ekg
+                       System.Remote.Common
+                       System.Remote.Counter.Internal
+                       System.Remote.Gauge.Internal
+                       System.Remote.Label.Internal
 
-  build-depends:
-    aeson < 0.8,
-    base >= 4.5 && < 5,
-    bytestring < 1.0,
-    containers < 0.6,
-    filepath < 1.4,
-    network < 2.5,
-    snap-core < 0.10,
-    snap-server < 0.10,
-    text < 1.2,
-    time < 1.5,
-    transformers < 0.4,
-    unordered-containers < 0.3
+  build-depends:       aeson < 0.8,
+                       base >= 4.5 && < 5,
+                       bytestring < 1.0,
+                       containers < 0.6,
+                       filepath < 1.4,
+                       text < 1.2,
+                       time < 1.5,
+                       transformers < 0.4,
+                       unordered-containers < 0.3
 
-  ghc-options: -Wall
+  if flag(useSnap)
+    other-modules:
+                       System.Remote.Snap
+    build-depends:
+                       snap-core < 0.10,
+                       snap-server < 0.10
+    cpp-options:       -DUSE_SNAP
+  else
+    other-modules:
+                       System.Remote.WebServer
+    build-depends:
+                       c10k >= 0.5,
+                       network,
+                       webserver >= 0.6,
+                       unix
+
+  ghc-options:         -Wall
 
 source-repository head
   type:     git
