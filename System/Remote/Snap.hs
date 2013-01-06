@@ -22,7 +22,7 @@ import qualified Data.Text.Encoding as T
 import Data.Word (Word8)
 import Network.Socket (NameInfoFlag(NI_NUMERICHOST), addrAddress, getAddrInfo,
                        getNameInfo)
-import Paths_ekg (getDataDir)
+import Paths_ekg_webserver (getDataDir)
 import Prelude hiding (read)
 import Snap.Core (MonadSnap, Request, Snap, finishWith, getHeaders, getRequest,
                   getResponse, method, Method(GET), modifyResponse, pass, route,

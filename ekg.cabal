@@ -1,4 +1,4 @@
-name:                ekg
+name:                ekg-webserver
 version:             0.3.1.4
 synopsis:            Remote monitoring of processes
 description:
@@ -32,7 +32,7 @@ library
     System.Remote.Label
     System.Remote.Monitoring
 
-  other-modules:       Paths_ekg
+  other-modules:       Paths_ekg_webserver
                        System.Remote.Common
                        System.Remote.Counter.Internal
                        System.Remote.Gauge.Internal

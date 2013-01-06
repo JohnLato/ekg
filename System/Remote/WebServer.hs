@@ -14,7 +14,7 @@ import Data.Char (chr)
 import qualified Data.HashMap.Strict as M
 import Data.IORef (IORef)
 import qualified Data.Text as T
-import Paths_ekg (getDataDir)
+import Paths_ekg_webserver (getDataDir)
 import Prelude hiding (read)
 import Network.Web.HTTP
 import Network.Web.Server.Basic
