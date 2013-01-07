@@ -70,7 +70,7 @@ getPath counters gauges labels req
         toText = T.pack . map (chr . fromIntegral) . S.unpack
 
 acceptCT :: Comm a => CT -> a -> Bool
-acceptCT ct = maybe False (S.isInfixOf ct) . lookupField FkAccept
+acceptCT ct = maybe False ((ct `elem`) . parseHttpAccept) . lookupField FkAccept
 
 splitAPI :: T.Text -> (T.Text, Maybe T.Text)
 splitAPI path = f components
