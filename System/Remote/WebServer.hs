@@ -13,7 +13,10 @@ import qualified Data.ByteString.Lazy as L
 import Data.Char (chr)
 import qualified Data.HashMap.Strict as M
 import Data.IORef (IORef)
+import qualified Data.List as List
+import Data.Function
 import qualified Data.Text as T
+import Data.Word
 import Paths_ekg_webserver (getDataDir)
 import Prelude hiding (read)
 import Network.Web.HTTP
@@ -71,6 +74,29 @@ getPath counters gauges labels req
 
 acceptCT :: Comm a => CT -> a -> Bool
 acceptCT ct = maybe False ((ct `elem`) . parseHttpAccept) . lookupField FkAccept
+
+-- | Parse the HTTP accept string to determine supported content types.
+parseHttpAccept :: S.ByteString -> [S.ByteString]
+parseHttpAccept = List.map fst
+                . List.sortBy (rcompare `on` snd)
+                . List.map grabQ
+                . S.split 44 -- comma
+  where
+    rcompare :: Double -> Double -> Ordering
+    rcompare = flip compare
+    grabQ s =
+        let (s', q) = breakDiscard 59 s -- semicolon
+            (_, q') = breakDiscard 61 q -- equals sign
+         in (trimWhite s', readQ $ trimWhite q')
+    readQ s = case reads $ S8.unpack s of
+                (x, _):_ -> x
+                _ -> 1.0
+    trimWhite = S.dropWhile (== 32) -- space
+
+breakDiscard :: Word8 -> S.ByteString -> (S.ByteString, S.ByteString)
+breakDiscard w s =
+    let (x, y) = S.break (== w) s
+    in (x, S.drop 1 y)
 
 splitAPI :: T.Text -> (T.Text, Maybe T.Text)
 splitAPI path = f components
