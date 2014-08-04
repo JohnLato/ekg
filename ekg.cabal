@@ -38,14 +38,14 @@ library
                        System.Remote.Gauge.Internal
                        System.Remote.Label.Internal
 
-  build-depends:       aeson < 0.8,
+  build-depends:       aeson < 0.9,
                        base >= 4.5 && < 5,
                        bytestring < 1.0,
                        containers < 0.6,
                        filepath < 1.4,
                        text < 1.2,
                        time < 1.5,
-                       transformers < 0.4,
+                       transformers < 0.5,
                        unordered-containers < 0.3
 
   if flag(useSnap)
